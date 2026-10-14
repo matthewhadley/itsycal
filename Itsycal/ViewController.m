@@ -378,7 +378,7 @@ static NSArray<NSString *> *ObservedDefaultsKeys(void)
 
     // Never show menu item images, whatever the system configuration.
     for (NSMenuItem *item in optMenu.itemArray) {
-        item.preferredImageVisibility = NSMenuItemImageVisibilityHidden;
+        if (@available(macOS 27.0, *)) item.preferredImageVisibility = NSMenuItemImageVisibilityHidden;
     }
 
     NSPoint pt = NSOffsetRect(_btnOpt.frame, -5, -10).origin;
@@ -539,7 +539,7 @@ static NSArray<NSString *> *ObservedDefaultsKeys(void)
 
     // Never show menu item images, whatever the system configuration.
     for (NSMenuItem *item in menu.itemArray) {
-        item.preferredImageVisibility = NSMenuItemImageVisibilityHidden;
+        if (@available(macOS 27.0, *)) item.preferredImageVisibility = NSMenuItemImageVisibilityHidden;
     }
 
     return menu;

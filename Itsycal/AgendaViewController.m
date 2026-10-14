@@ -206,7 +206,7 @@ static NSString *kEventCellIdentifier = @"EventCell";
     }
     // Never show menu item images, whatever the system configuration.
     for (NSMenuItem *menuItem in menu.itemArray) {
-        menuItem.preferredImageVisibility = NSMenuItemImageVisibilityHidden;
+        if (@available(macOS 27.0, *)) menuItem.preferredImageVisibility = NSMenuItemImageVisibilityHidden;
     }
 }
 
