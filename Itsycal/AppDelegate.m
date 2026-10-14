@@ -50,6 +50,7 @@
         kBaselineOffset:       @0,  // Clamped to -2.0...2.0
         kEnableMeetingButtonIndefinitely: @(NO),
         kShowEventPopoverOnHover: @(NO),
+        kOpenEventInCalendarOnClick: @(NO),
         kAllowOutsideApplicationsFolder: @(NO),
         kDoNotCheckLoginItemStatus: @(NO),
         kWindowPosition:       @(WindowPositionBelowMenuBarIcon),

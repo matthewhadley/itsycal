@@ -277,7 +277,9 @@ static NSString *kEventCellIdentifier = @"EventCell";
     dispatch_once(&onceToken, ^{
         self->_popover = [MoPopover new];
         self->_popover.contentViewController = [AgendaPopoverVC new];
-        self->_popover.behavior = NSPopoverBehaviorTransient;
+        // Semitransient so a click on the agenda isn't swallowed to dismiss
+        // a hover popover; the click goes through to -showPopover:.
+        self->_popover.behavior = NSPopoverBehaviorSemitransient;
         self->_popover.animates = NO;
         // Enable coloring the full background including the arrow.
         // See AgendaPopoverVC -loadView.
@@ -321,6 +323,19 @@ static NSString *kEventCellIdentifier = @"EventCell";
     if (_tv.clickedRow == -1 || [self tableView:_tv isGroupRow:_tv.clickedRow] ||
         [self tableView:_tv isEmptyEventRow:_tv.clickedRow]) return;
 
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kOpenEventInCalendarOnClick]) {
+        EventInfo *info = self.events[_tv.clickedRow];
+        NSString *eventID = [info.event.eventIdentifier stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLPathAllowedCharacterSet];
+        if (eventID) {
+            // Undocumented Calendar URL scheme that selects a specific event.
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"ical://ekevent/%@?method=show&options=more", eventID]];
+            if (url) {
+                [_popover close];
+                [NSWorkspace.sharedWorkspace openURL:url];
+                return;
+            }
+        }
+    }
     [self showPopoverForRow:_tv.clickedRow];
 }
 
