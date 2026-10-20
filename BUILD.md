@@ -6,6 +6,14 @@ This project uses a Local.xcconfig file to handle code signing so that signing i
 cp Local.xcconfig.example Local.xcconfig
 ```
 
+### Build and Install Locally
+
+```
+scripts/install.sh
+```
+
+Builds Itsycal.app into `build/`, quits any running copy, replaces `/Applications/Itsycal.app` and opens it. It builds for the running macOS rather than the project's macOS 27, so the app launches on earlier releases; `DEPLOYMENT_TARGET` overrides that. `PREFIX` sets another destination and `CONFIG=Debug` a debug build.
+
 ### Build and Notarize
 
 1. In Xcode, choose Product > Archive
