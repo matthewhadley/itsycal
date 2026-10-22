@@ -305,7 +305,13 @@ static NSURL *MeetingURLForEvent(EKEvent *event); // see below
             [[event valueForKey:@"participationStatus"] integerValue] == EKParticipantStatusDeclined) {
             continue;
         }
-        
+
+        // Skip events the organizer has canceled. Exchange keeps
+        // them on attendees' calendars until they're removed.
+        if (event.status == EKEventStatusCanceled) {
+            continue;
+        }
+
         // Iterate through the days this event spans. We only care about
         // days for this event that are between startDate and endDate.
         NSDate *date  = [event.startDate laterDate:startDate];
