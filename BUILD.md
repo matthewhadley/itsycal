@@ -12,7 +12,7 @@ cp Local.xcconfig.example Local.xcconfig
 scripts/install.sh
 ```
 
-Builds Itsycal.app into `build/`, quits any running copy, replaces `/Applications/Itsycal.app` and opens it. It builds for the running macOS rather than the project's macOS 27, so the app launches on earlier releases; `DEPLOYMENT_TARGET` overrides that. `PREFIX` sets another destination and `CONFIG=Debug` a debug build.
+Builds Itsycal.app into `build/`, quits any running copy, replaces `/Applications/Itsycal.app` and opens it. `PREFIX` sets another destination and `CONFIG=Debug` a debug build.
 
 ### Build and Notarize
 

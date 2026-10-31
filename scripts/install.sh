@@ -6,21 +6,20 @@
 # ad hoc, and macOS ties the Calendars grant to the signature, so each rebuild asks again; Option 2 in that file,
 # a stable identity, keeps the grant.
 # CONFIG is the Xcode configuration, Release or Debug.
-# DEPLOYMENT_TARGET is the oldest macOS the build runs on, by default the running one: the project's own target
-# is macOS 27, which would keep it from launching on anything earlier.
 set -eu
 
 cd "$(dirname "$0")/.."
 
 CONFIG=${CONFIG:-Release}
 PREFIX=${PREFIX:-/Applications}
-DEPLOYMENT_TARGET=${DEPLOYMENT_TARGET:-$(sw_vers -productVersion | cut -d. -f1-2)}
 APP=build/Build/Products/$CONFIG/Itsycal.app
 
 [ -f Local.xcconfig ] || cp Local.xcconfig.example Local.xcconfig
 
+# The destination names this Mac's architecture: platform=macOS alone matches both "My Mac" and "Any Mac", and
+# xcodebuild warns about picking one.
 xcodebuild -quiet -project Itsycal.xcodeproj -scheme Itsycal -configuration "$CONFIG" -derivedDataPath build \
-    MACOSX_DEPLOYMENT_TARGET="$DEPLOYMENT_TARGET" build
+    -destination "platform=macOS,arch=$(uname -m)" build
 
 pkill -x Itsycal || true
 while pgrep -x Itsycal >/dev/null; do sleep 0.1; done
