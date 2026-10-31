@@ -789,7 +789,13 @@ static NSArray<NSString *> *ObservedDefaultsKeys(void)
 
 - (void)positionItsycalWindowForInitialPresentation:(BOOL)initialPresentation
 {
-    NSRect statusItemFrame = [_statusItem.button.window convertRectToScreen:_statusItem.button.frame];
+    // The status item's slot in the menu bar: the button's left and
+    // right edges, and the top and bottom of the window holding it,
+    // so that Itsycal opens just below the menu bar.
+    NSButton *button = _statusItem.button;
+    NSRect buttonFrame = [button.window convertRectToScreen:[button convertRect:button.bounds toView:nil]];
+    NSRect statusItemFrame = NSMakeRect(NSMinX(buttonFrame), NSMinY(button.window.frame),
+                                        NSWidth(buttonFrame), NSHeight(button.window.frame));
 
     // Hack alert:
     // MacOS 11 does not report the correct frame for _statusItem.button

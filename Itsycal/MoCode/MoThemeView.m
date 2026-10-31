@@ -33,8 +33,7 @@
 
 - (void)drawKnobSlotInRect:(NSRect)slotRect highlight:(BOOL)flag
 {
-    [Theme.mainBackgroundColor set];
-    NSRectFill(slotRect);
+    // No track: the background behind the scroller shows through.
 }
 
 @end

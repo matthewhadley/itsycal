@@ -136,11 +136,6 @@ NSString * const kMoCalendarNumRows = @"MoCalendarNumRows";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (BOOL)isOpaque
-{
-    return YES;
-}
-
 #pragma mark
 #pragma mark Instance methods
 
@@ -766,9 +761,6 @@ NSString * const kMoCalendarNumRows = @"MoCalendarNumRows";
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    [Theme.mainBackgroundColor set];
-    NSRectFill(self.bounds);
-    
     CGFloat radius = SizePref.cellRadius + 3;
     CGFloat sz = SizePref.cellSize;
     if (self.highlightedDOWs) {

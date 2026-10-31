@@ -745,9 +745,30 @@ static NSString *kEventCellIdentifier = @"EventCell";
         _DOWTextField.font = [NSFont systemFontOfSize:SizePref.fontSize weight:NSFontWeightSemibold];
         _DOWTextField.textColor = Theme.agendaDOWTextColor;
 
+        // The date header floats over the rows scrolling under it,
+        // so it needs a background of its own: the window's menu
+        // material, which matches the window around it.
+        NSVisualEffectView *background = [NSVisualEffectView new];
+        background.translatesAutoresizingMaskIntoConstraints = NO;
+        background.material = NSVisualEffectMaterialMenu;
+        background.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+        background.state = NSVisualEffectStateActive;
+
+        NSBox *divider = [NSBox new];
+        divider.translatesAutoresizingMaskIntoConstraints = NO;
+        divider.boxType = NSBoxCustom;
+        divider.borderWidth = 0;
+        divider.fillColor = Theme.agendaDividerColor;
+
+        [self addSubview:background];
+        [self addSubview:divider];
         [self addSubview:_dayTextField];
         [self addSubview:_DOWTextField];
-        MoVFLHelper *vfl = [[MoVFLHelper alloc] initWithSuperview:self metrics:nil views:NSDictionaryOfVariableBindings(_dayTextField, _DOWTextField)];
+        MoVFLHelper *vfl = [[MoVFLHelper alloc] initWithSuperview:self metrics:nil views:NSDictionaryOfVariableBindings(background, divider, _dayTextField, _DOWTextField)];
+        [vfl :@"H:|[background]|"];
+        [vfl :@"V:|[background]|"];
+        [vfl :@"H:|-10-[divider]-10-|"];
+        [vfl :@"V:|-3-[divider(1)]"];
         [vfl :@"H:|-10-[_DOWTextField]-(>=4)-[_dayTextField]-10-|" :NSLayoutFormatAlignAllLastBaseline];
         [vfl :@"V:|-6-[_dayTextField]-1-|"];
         
@@ -765,16 +786,6 @@ static NSString *kEventCellIdentifier = @"EventCell";
 {
     _dayTextField.font = [NSFont systemFontOfSize:SizePref.fontSize weight:NSFontWeightSemibold];
     _DOWTextField.font = [NSFont systemFontOfSize:SizePref.fontSize weight:NSFontWeightSemibold];
-}
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-    // Must be opaque so rows can scroll under it.
-    [Theme.mainBackgroundColor set];
-    NSRectFillUsingOperation(self.bounds, NSCompositingOperationSourceOver);
-    NSRect r = NSMakeRect(10, self.bounds.size.height - 4, self.bounds.size.width - 20, 1);
-    [Theme.agendaDividerColor set];
-    NSRectFillUsingOperation(r, NSCompositingOperationSourceOver);
 }
 
 @end
